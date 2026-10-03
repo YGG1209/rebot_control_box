@@ -556,7 +556,6 @@ class RebotArm:
             self._setup_motors()
         except Exception:
             for ctrl in self._ctrl_map.values():
-                ctrl.shutdown()
                 ctrl.close()
             self._ctrl_map.clear()
             self._motor_map.clear()
@@ -591,7 +590,13 @@ class RebotArm:
             raise
 
     def _make_controller(self, vendor: str) -> Controller:
-        if self._channel.startswith("/dev/tty"):
+        channel_path = Path(self._channel)
+        resolved_channel = (
+            str(channel_path.resolve())
+            if channel_path.exists()
+            else self._channel
+        )
+        if resolved_channel.startswith("/dev/tty"):
             return Controller.from_dm_serial(self._channel, 921600)
         return Controller(self._channel)
 

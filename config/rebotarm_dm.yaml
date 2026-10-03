@@ -13,7 +13,7 @@
 urdf_path: "urdf/reBot-DevArm_fixend_description/urdf/reBot-DevArm_fixend.urdf"
 end_effector_frame: "end_link"
 
-channel: /dev/ttyACM0
+channel: /dev/rebot_arm
 comm_rate: 350.0
 movel_rate: 10.0
 servol_rate: 200.0
