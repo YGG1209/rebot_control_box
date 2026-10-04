@@ -58,6 +58,21 @@ class ControlMode(IntEnum):
     SERVOL = 2
 
 
+class RobotMode(IntEnum):
+    DISCONNECTED = 0
+    CONNECTING = 1
+    IDLE = 2
+    RUNNING = 3
+    FAULT = 4
+    STOPPING = 5
+
+
+class SafetyState(IntEnum):
+    NORMAL = 0
+    COMMAND_TIMEOUT = 1
+    CONTROL_FAULT = 2
+
+
 class WireType(Enum):
     BOOL = ("BOOL", "?")
     UINT8 = ("UINT8", "B")
@@ -257,10 +272,18 @@ def encode_json_payload(values: Mapping[str, Any]) -> bytes:
     ).encode("utf-8")
 
 
+# 拒绝JSON中的非标准数值
+def _reject_json_constant(value: str) -> None:
+    raise ProtocolError(f"invalid JSON constant: {value}")
+
+
 # 将JSON字节解码为对象
 def decode_json_payload(payload: bytes) -> dict[str, Any]:
     try:
-        values = json.loads(payload.decode("utf-8"))
+        values = json.loads(
+            payload.decode("utf-8"),
+            parse_constant=_reject_json_constant,
+        )
     except (UnicodeDecodeError, json.JSONDecodeError) as error:
         raise ProtocolError("invalid JSON payload") from error
     if not isinstance(values, dict):
