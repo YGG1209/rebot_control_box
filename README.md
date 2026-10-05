@@ -11,8 +11,8 @@ git clone https://github.com/YGG1209/rebot_control_box.git
 ```
 cd /home/rebot/rebot_rtde
 
-python3 -m venv .venv-publish
-source .venv-publish/bin/activate
+python3 -m venv --prompt rebot_rtde .venv
+source .venv/bin/activate
 
 python -m pip install --upgrade pip build twine
 ```
