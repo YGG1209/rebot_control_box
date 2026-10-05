@@ -1,3 +1,43 @@
+# 安装
+克隆代码库
+```
+git clone https://github.com/YGG1209/rebot_control_box.git
+```
+切换到feature/rebot_rtde分支，并更新代码
+
+## 安装打包工具
+**！注意首先需要注册好PyPI账号**、
+
+```
+cd /home/rebot/rebot_rtde
+
+python3 -m venv .venv-publish
+source .venv-publish/bin/activate
+
+python -m pip install --upgrade pip build twine
+```
+
+## 生成发布文件
+```
+python -m build
+```
+成功后，dist 目录通常会生成：
+```
+dist/
+├── rebot_rtde-0.1.0-py3-none-any.whl
+└── rebot_rtde-0.1.0.tar.gz
+```
+
+## 上传正式的PyPI
+确认要公开发布后执行：
+```
+python -m twine upload --username __token__ \
+  dist/rebot_rtde-0.1.0-py3-none-any.whl \
+  dist/rebot_rtde-0.1.0.tar.gz
+```
+提示输入密码或 API Token 时，粘贴完整的token
+
+
 # rebot_rtde 版本更新与发布
 
 以下以 `0.1.0` 更新到 `0.1.1` 为例。
